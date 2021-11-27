@@ -23,7 +23,29 @@
     background-size: cover;
 }
 
+.TorchTwinckling{
+    animation: 2s twinckling infinite;
+}
+
 .Road{
     position: absolute;
     background-color: aqua;
+}
+
+@keyframes twinckling {
+    10% {
+        filter: brightness(90%);
+    }
+    30% {
+        filter: brightness(50%);
+    }
+    50% {
+        filter: brightness(30%);
+    }
+    70% {
+        filter: brightness(50%);
+    }
+    90% {
+        filter: brightness(90%);
+    }
 }

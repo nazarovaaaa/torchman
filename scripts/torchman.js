@@ -25,11 +25,13 @@ const torches = [
         left: 0
     },
     {
-        top: 220,
-        left: 300
+        top: 230,
+        left: 290
     }
 ]
 
+
+var activeTorch = -1
 
 const map = document.getElementById('Map')
 
@@ -38,14 +40,16 @@ let currentPosition = {
     left: 70
 }
 
-
 function torchLight(key) {
     const torch = torches[key]
-    if( Math.abs(torch.top + 45 - (currentPosition.top - 23)) < 50
-        && Math.abs(torch.left + 30 - (currentPosition.left - 26)) < 50 ){
-        console.log(key)
+    if( Math.abs(torch.top + 45 - (currentPosition.top - 23)) < 100
+        && Math.abs(torch.left + 30 - (currentPosition.left - 26)) < 100 && activeTorch === key){
+        torchDivs[key].className = 'Torch'
+        console.log('aaaaaaaaa')
+        activeTorch = -1
     }
 }
+
 
 function move(event) {
     if(Math.abs(currentPosition.top - (event.clientY)) < 40
@@ -78,6 +82,21 @@ torches.forEach((torch, key) => {
     map.append(torchDiv)
 })
 
+var torchDivs = document.getElementsByClassName('Torch')
+
+
+function randomTwinkle() {
+    if(activeTorch === -1){
+        activeTorch = Math.floor(Math.random() * 10) % torches.length
+        torchDivs[activeTorch].className = 'Torch TorchTwinckling'
+        setTimeout(()=>{
+            if(activeTorch != -1){
+                map.innerText = "ВЫ ЕБЛАН АХАХАХА"
+            }
+        }, 3000)
+    }
+}
+
 
 const torchMan = document.getElementById('TorchMan')
-console.log(torchMan)
+setInterval(randomTwinkle, 6000)
