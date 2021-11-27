@@ -1,0 +1,29 @@
+#Map{
+    position: relative;
+    width: 400px;
+    height: 350px;
+    background-color: red;
+}
+#TorchMan{
+    position: absolute;
+    top: 70px;
+    left: 70px;
+    width: 47px;
+    height: 53px;
+    background-image: url("../assets/torchman.svg");
+    background-size: cover;
+    z-index: 1000;
+}
+
+.Torch{
+    position: absolute;
+    width: 60px;
+    height: 90px;
+    background-image: url("../assets/torch.svg");
+    background-size: cover;
+}
+
+.Road{
+    position: absolute;
+    background-color: aqua;
+}
