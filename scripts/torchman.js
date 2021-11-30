@@ -1,59 +1,70 @@
 const roads = [
     {
-        top: 50,
-        left: 50,
-        bottom: 100,
-        right: 250
+        top: 200,
+        left: 0,
+        bottom: 250,
+        right: 480
     },
     {
-        top: 50,
-        left: 50,
-        bottom: 300,
-        right: 100
+        top: 0,
+        left: 240,
+        bottom: 480,
+        right: 270
     },
-    {
-        top: 250,
-        left: 50,
-        bottom: 300,
-        right: 300
-    }
 ]
 
 const torches = [
     {
-        top: 50,
+        top: 200,
         left: 0
     },
     {
-        top: 230,
-        left: 290
+        top: 400,
+        left: 270
     }
 ]
 
+let levelStage = [true, false, false, false]
+let currentStage = 0, stageEnd = false
+
+let currentPosition = {
+    top: 250,
+    left: 250
+}
 
 var activeTorch = -1
+var isTorchManActive = false
+
+const status = document.getElementById('Status')
 
 const map = document.getElementById('Map')
 
-let currentPosition = {
-    top: 70,
-    left: 70
+const torchMan = document.getElementById('TorchMan')
+
+torchMan.onclick = () => {
+    isTorchManActive = !isTorchManActive
 }
+
 
 function torchLight(key) {
     const torch = torches[key]
     if( Math.abs(torch.top + 45 - (currentPosition.top - 23)) < 100
         && Math.abs(torch.left + 30 - (currentPosition.left - 26)) < 100 && activeTorch === key){
+        levelStage[currentStage] = true
         torchDivs[key].className = 'Torch'
-        console.log('aaaaaaaaa')
         activeTorch = -1
+        if(levelStage[currentStage] && currentStage == (levelStage.length - 1)){
+            stageEnd = true
+            status.className = 'Success'
+            status.innerText = "Вы выиграли"
+        }
     }
 }
 
 
 function move(event) {
-    if(Math.abs(currentPosition.top - (event.clientY)) < 40
-        && Math.abs(currentPosition.left - (event.clientX)) < 40){
+    if(isTorchManActive && Math.abs(currentPosition.top - (event.clientY)) < 60
+        && Math.abs(currentPosition.left - (event.clientX)) < 60){
         currentPosition.top = event.clientY
         currentPosition.left = event.clientX
         torchMan.style.top = `${event.clientY - 23}px`
@@ -69,7 +80,7 @@ roads.forEach((road, key) => {
     roadDiv.style.width = `${road.right - road.left}px`
     roadDiv.style.height = `${road.bottom - road.top}px`
     roadDiv.onmousemove = move
-    map.append(roadDiv)
+    map.prepend(roadDiv)
 })
 
 
@@ -84,19 +95,22 @@ torches.forEach((torch, key) => {
 
 var torchDivs = document.getElementsByClassName('Torch')
 
+let time_to_spawn = 3000
 
 function randomTwinkle() {
-    if(activeTorch === -1){
+    if(levelStage[currentStage]){
         activeTorch = Math.floor(Math.random() * 10) % torches.length
         torchDivs[activeTorch].className = 'Torch TorchTwinckling'
-        setTimeout(()=>{
-            if(activeTorch != -1){
-                map.innerText = "ВЫ ЕБЛАН АХАХАХА"
+        currentStage++
+        setTimeout(() => {
+            if(!levelStage[currentStage] && !stageEnd){
+                console.log(currentStage)
+                status.className = 'Error'
+                status.innerText = "Вы обосрались"
             }
-        }, 3000)
+        }, time_to_spawn)
     }
 }
 
 
-const torchMan = document.getElementById('TorchMan')
-setInterval(randomTwinkle, 6000)
+setInterval(randomTwinkle, time_to_spawn + 1000)

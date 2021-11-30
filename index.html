@@ -6,10 +6,27 @@
     <link rel="stylesheet" href="css/map.css"/>
 </head>
 <body>
-<div id="Map">
-        <div id="TorchMan">
-        </div>
+<div class="Main">
+    <iframe id="GameSpace" srcdoc='<!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Title</title>
+                <link rel="stylesheet" href="css/map.css"/>
+            </head>
+            <body>
+            <div class="Main">
+                <div id="Map">
+                    <div class="Hidden" id="Status">
+                    </div>
+                    <div id="TorchMan">
+                    </div>
+                </div>
+            </div>
+            <script src="scripts/torchman.js"></script>
+            </body>
+        </html>'>
+    </iframe>
 </div>
-<script src="scripts/torchman.js"></script>
 </body>
 </html>

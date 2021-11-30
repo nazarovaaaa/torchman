@@ -1,26 +1,95 @@
+@font-face {
+    font-family: Pixel;
+    src: url(../fonts/Fifaks10Dev1.ttf);
+    font-weight: bold;
+}
+
+body, html{
+    font-family: Pixel;
+    font-size: 130%;
+    height: 100%;
+    background-color: black;
+    overflow: hidden;
+}
+.Main{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Error{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: red;
+}
+
+.Success{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: green;
+}
+
+.Hidden{
+    display: none;
+}
+
+#GameSpace{
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+}
+
+#Status{
+    z-index: 10;
+    background-color: #110408;
+    width:200px;
+    height: 50px;
+}
+
 #Map{
     position: relative;
-    width: 400px;
-    height: 350px;
-    background-color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+    height: 500px;
+    background-image: url("../assets/map.svg");
+    background-size: cover;
 }
 #TorchMan{
     position: absolute;
-    top: 70px;
-    left: 70px;
-    width: 47px;
+    top: 250px;
+    left: 250px;
+    width: 53px;
     height: 53px;
     background-image: url("../assets/torchman.svg");
     background-size: cover;
-    z-index: 1000;
+    cursor: pointer;
+    transition: top;
+    transition: left;
+}
+
+#TorchMan:hover{
+    background-image: url("../assets/torch-selected.svg");
 }
 
 .Torch{
     position: absolute;
     width: 60px;
     height: 90px;
-    background-image: url("../assets/torch.svg");
+    background-image: url("../assets/torch.gif");
+    border-radius: 10px;
     background-size: cover;
+    cursor: pointer;
+}
+
+.Torch:hover{
+    background-color: rgba(255,182,5, 0.3)
 }
 
 .TorchTwinckling{
@@ -29,7 +98,6 @@
 
 .Road{
     position: absolute;
-    background-color: aqua;
 }
 
 @keyframes twinckling {
