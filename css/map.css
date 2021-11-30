@@ -22,7 +22,8 @@ body, html{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+    background-color: #110408;
     color: red;
 }
 
@@ -30,12 +31,21 @@ body, html{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+    background-color: #041104;
     color: green;
 }
 
 .Hidden{
     display: none;
+}
+
+.Button{
+    cursor: pointer;
+    background-color: grey;
+    border: 2px darkgrey solid;
+    text-align: center;
+    color: white;
 }
 
 #GameSpace{
@@ -46,9 +56,8 @@ body, html{
 
 #Status{
     z-index: 10;
-    background-color: #110408;
     width:200px;
-    height: 50px;
+    height: 100px;
 }
 
 #Map{

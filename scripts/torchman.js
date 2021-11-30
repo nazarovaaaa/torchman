@@ -45,6 +45,23 @@ torchMan.onclick = () => {
     isTorchManActive = !isTorchManActive
 }
 
+function restartLevel(){
+    levelStage = [true, false, false, false]
+    currentStage = 0
+    stageEnd = false
+    status.className = 'Hidden'
+    torchDivs[activeTorch].className = 'Torch'
+    activeTorch = -1
+}
+
+function nextLevel(){
+    levelStage = [true, false, false, false]
+    currentStage = 0
+    stageEnd = false
+    status.className = 'Hidden'
+    torchDivs[activeTorch].className = 'Torch'
+    activeTorch = -1
+}
 
 function torchLight(key) {
     const torch = torches[key]
@@ -56,7 +73,8 @@ function torchLight(key) {
         if(levelStage[currentStage] && currentStage == (levelStage.length - 1)){
             stageEnd = true
             status.className = 'Success'
-            status.innerText = "Вы выиграли"
+            status.innerHTML = "<div>Вы выиграли</div><div onclick='nextLevel()' class='Button'>Следующий уровень</div>"
+
         }
     }
 }
@@ -98,7 +116,7 @@ var torchDivs = document.getElementsByClassName('Torch')
 let time_to_spawn = 3000
 
 function randomTwinkle() {
-    if(levelStage[currentStage]){
+    if(levelStage[currentStage] && !stageEnd){
         activeTorch = Math.floor(Math.random() * 10) % torches.length
         torchDivs[activeTorch].className = 'Torch TorchTwinckling'
         currentStage++
@@ -107,6 +125,7 @@ function randomTwinkle() {
                 console.log(currentStage)
                 status.className = 'Error'
                 status.innerText = "Вы обосрались"
+                status.innerHTML = "<div>Вы обосрались</div><div onclick='restartLevel()' class='Button'>Заново</div>"
             }
         }, time_to_spawn)
     }
