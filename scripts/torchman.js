@@ -66,7 +66,7 @@ function nextLevel(){
 function torchLight(key) {
     const torch = torches[key]
     if( Math.abs(torch.top + 45 - (currentPosition.top - 23)) < 100
-        && Math.abs(torch.left + 30 - (currentPosition.left - 26)) < 100 && activeTorch === key){
+        && Math.abs(torch.left + 30 - (currentPosition.left - 26)) < 100 && activeTorch === key && !stageEnd){
         levelStage[currentStage] = true
         torchDivs[key].className = 'Torch'
         activeTorch = -1
@@ -74,7 +74,6 @@ function torchLight(key) {
             stageEnd = true
             status.className = 'Success'
             status.innerHTML = "<div>Вы выиграли</div><div onclick='nextLevel()' class='Button'>Следующий уровень</div>"
-
         }
     }
 }
@@ -101,6 +100,11 @@ roads.forEach((road, key) => {
     map.prepend(roadDiv)
 })
 
+// const roads_ = document.getElementsByClassName('Road')
+// roads_.forEach(item => {
+//     item.onmousemove = move
+// })
+
 
 torches.forEach((torch, key) => {
     const torchDiv = document.createElement('div')
@@ -123,6 +127,7 @@ function randomTwinkle() {
         setTimeout(() => {
             if(!levelStage[currentStage] && !stageEnd){
                 console.log(currentStage)
+                stageEnd = true
                 status.className = 'Error'
                 status.innerText = "Вы обосрались"
                 status.innerHTML = "<div>Вы обосрались</div><div onclick='restartLevel()' class='Button'>Заново</div>"
