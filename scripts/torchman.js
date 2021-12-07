@@ -4,6 +4,7 @@ const Stages = [
           left: 250,
           top: 250
         },
+        time: 3000,
         roads:[
             {
                 top: 200,
@@ -28,13 +29,16 @@ const Stages = [
                 left: 270
             }
         ],
+        points: 50,
         background:'url("./assets/map.svg")'
     },
     {
         start:{
             left: 250,
-            top: 250
+            top: 100
         },
+        time: 5000,
+        points: 100,
         roads:[
             {
                 top: 380,
@@ -133,7 +137,8 @@ const Stages = [
     },
 ]
 
-let Stage = 0;
+var Stage = 0;
+var Mode = 0
 
 var torches = Stages[Stage].torches
 var roads = Stages[Stage].roads
@@ -148,7 +153,7 @@ let currentPosition = {
 
 var activeTorch = -1
 var isTorchManActive = false
-
+var score_ = 0, name=''
 const status = document.getElementById('Status')
 
 let map = document.getElementById('Map')
@@ -161,6 +166,29 @@ const torchMan = document.getElementById('TorchMan')
 
 torchMan.onclick = () => {
     isTorchManActive = !isTorchManActive
+}
+
+function torchLight(key) {
+    const torch = torches[key]
+    if( Math.abs(torch.top + 45 - (currentPosition.top - 23)) < 100
+        && Math.abs(torch.left + 30 - (currentPosition.left - 26)) < 100 && activeTorch === key && !stageEnd){
+        if(Mode===1){
+            currentStage--;
+        }
+        else{
+            levelStage[currentStage] = true
+        }
+        torchDivs[key].className = 'Torch'
+        activeTorch = -1
+        score_+=Stages[Stage].points
+        score.innerHTML=score_
+        localStorage.setItem('score', score_)
+        if(levelStage[currentStage] && currentStage === (levelStage.length - 1)){
+            stageEnd = true
+            status.className = 'Success'
+            status.innerHTML = "<div>Вы выиграли</div><div onclick='nextLevel()' class='Button'>Следующий уровень</div>"
+        }
+    }
 }
 
 function restartLevel(){
@@ -184,6 +212,7 @@ function nextLevel(){
     roads = Stages[Stage].roads
     generateMap()
     currentStage = 0
+    time_to_spawn = Stages[Stage].time
     stageEnd = false
     status.className = 'Hidden'
     activeTorch != -1 ? torchDivs[activeTorch].className = 'Torch': ''
@@ -193,22 +222,6 @@ function nextLevel(){
     torchMan.style.top = `${Stages[Stage].start.top - 23}px`
     torchMan.style.left = `${Stages[Stage].start.left- 26}px`
 }
-
-function torchLight(key) {
-    const torch = torches[key]
-    if( Math.abs(torch.top + 45 - (currentPosition.top - 23)) < 100
-        && Math.abs(torch.left + 30 - (currentPosition.left - 26)) < 100 && activeTorch === key && !stageEnd){
-        levelStage[currentStage] = true
-        torchDivs[key].className = 'Torch'
-        activeTorch = -1
-        if(levelStage[currentStage] && currentStage === (levelStage.length - 1)){
-            stageEnd = true
-            status.className = 'Success'
-            status.innerHTML = "<div>Вы выиграли</div><div onclick='nextLevel()' class='Button'>Следующий уровень</div>"
-        }
-    }
-}
-
 
 function move(event) {
     if(isTorchManActive && Math.abs(currentPosition.top - (event.clientY)) < 60
@@ -223,7 +236,12 @@ function move(event) {
 function generateMap(){
     map.innerHTML=""
     map.prepend(torchMan)
+    map.prepend(toMenu)
     map.prepend(status)
+    map.prepend(score)
+    map.prepend(nickname)
+    map.prepend(menu1)
+    map.prepend(menu2)
     roads.forEach((road, key) => {
         const roadDiv = document.createElement('div')
         roadDiv.className='Road'
@@ -251,27 +269,90 @@ function generateMap(){
     })
 }
 
-generateMap()
+var torchDivs;
 
-var torchDivs = document.getElementsByClassName('Torch')
-
-let time_to_spawn = 3000
-
-function randomTwinkle() {
-    if(levelStage[currentStage] && !stageEnd){
-        activeTorch = Math.floor(Math.random() * 10) % torches.length
-        torchDivs[activeTorch].className = 'Torch TorchTwinckling'
-        currentStage++
-        setTimeout(() => {
-            if(!levelStage[currentStage] && !stageEnd){
-                stageEnd = true
-                status.className = 'Error'
-                status.innerText = "Вы обосрались"
-                status.innerHTML = "<div>Вы проиграли</div><div onclick='restartLevel()' class='Button'>Заново</div>"
-            }
-        }, time_to_spawn)
-    }
+var time_to_spawn = 3000
+var interval;
+function pause(){
+    toMenu.className="Hidden"
+    levelStage = [true, false, false, false]
+    currentStage = 0
+    stageEnd = true
+    clearInterval(interval)
+    chooseMode()
 }
 
+function startStage(){
+    toMenu.className="Button"
+    toMenu.onclick=pause
+    generateMap()
 
-setInterval(randomTwinkle, time_to_spawn + 1000)
+    torchDivs = document.getElementsByClassName('Torch')
+
+    function randomTwinkle() {
+        if(levelStage[currentStage] && !stageEnd){
+            activeTorch = Math.floor(Math.random() * 10) % torches.length
+            torchDivs[activeTorch].className = 'Torch TorchTwinckling'
+            currentStage++
+            setTimeout(() => {
+                if(!levelStage[currentStage] && !stageEnd){
+                    stageEnd = true
+                    status.className = 'Error'
+                    status.innerText = "Вы обосрались"
+                    status.innerHTML = "<div>Вы проиграли</div><div onclick='restartLevel()' class='Button'>Заново</div>"
+                }
+            }, time_to_spawn)
+        }
+    }
+    interval = setInterval(randomTwinkle, time_to_spawn + 1000)
+}
+
+var menu1 = document.getElementById('Menu1')
+var menu2 = document.getElementById('Menu2')
+
+var score = document.getElementById('Score')
+var nickname = document.getElementById('Nickname')
+var toMenu = document.getElementById('ToMenu')
+
+function setMode(i) {
+    torches = Stages[Stage].torches
+    roads = Stages[Stage].roads
+    map.style.backgroundImage = Stages[Stage].background
+    time_to_spawn = Stages[Stage].time
+    Mode = i
+    menu2.className="Hidden"
+    stageEnd = false
+    startStage()
+}
+
+function setStage(i) {
+    Stage = i
+    menu1.className="Hidden"
+    menu2.className="Menu Success"
+    currentPosition.top = Stages[Stage].start.top
+    currentPosition.left = Stages[Stage].start.left
+    menu2.innerHTML = ` <div>Выберите режим игры</div>
+                        <div onclick="setMode(0)" class="Button">Конечная</div>
+                        <div onclick="setMode(1)" class="Button">Бесконечная</div>`
+}
+
+function getMeta(){
+    score_ = Number(localStorage.getItem('score'))??0
+    score.innerHTML = score_
+
+    name = localStorage.getItem('nickname')
+    if(!name){
+        name = prompt("Your name is:")
+        localStorage.setItem('nickname', name)
+    }
+    nickname.innerHTML = name
+}
+
+function chooseMode (){
+    menu1.className="Menu Success"
+    menu1.innerHTML = `<div>Выберите уровень сложности</div>
+    <div onclick="setStage(0)" class="Button">Легкий</div>
+    <div onclick="setStage(1)" class="Button">Сложный</div>`
+}
+getMeta()
+chooseMode()

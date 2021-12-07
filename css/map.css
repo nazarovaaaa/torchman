@@ -71,8 +71,6 @@ body, html{
 }
 #TorchMan{
     position: absolute;
-    top: 250px;
-    left: 250px;
     width: 53px;
     height: 53px;
     background-image: url("../assets/torchman.svg");
@@ -84,6 +82,24 @@ body, html{
 
 #TorchMan:hover{
     background-image: url("../assets/torch-selected.svg");
+}
+
+#Score{
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+    color: white;
+}
+#Nickname{
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    color: white;
+}
+#ToMenu{
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .Torch{
@@ -106,7 +122,9 @@ body, html{
 
 .Road{
     position: absolute;
-    background-color: rgba(255,0,0,0.3);
+}
+.Menu{
+    z-index: 100;
 }
 
 @keyframes twinckling {
