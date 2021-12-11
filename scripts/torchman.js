@@ -134,7 +134,7 @@ const Stages = [
             }
         ],
         background:'url("./assets/map_3.svg")'
-    },
+    }
 ]
 
 var Stage = 0;
@@ -143,7 +143,7 @@ var Mode = 0
 var torches = Stages[Stage].torches
 var roads = Stages[Stage].roads
 
-let levelStage = [true, false, false, false]
+let levelStage = [true, false, false, false, false, false]
 let currentStage = 0, stageEnd = false
 
 let currentPosition = {
@@ -153,7 +153,7 @@ let currentPosition = {
 
 var activeTorch = -1
 var isTorchManActive = false
-var score_ = 0, name=''
+var score_ = 0, name
 const status = document.getElementById('Status')
 
 let map = document.getElementById('Map')
@@ -165,6 +165,7 @@ map.style.backgroundImage = Stages[Stage].background
 const torchMan = document.getElementById('TorchMan')
 
 torchMan.onclick = () => {
+    console.log(11)
     isTorchManActive = !isTorchManActive
 }
 
@@ -181,32 +182,42 @@ function torchLight(key) {
         torchDivs[key].className = 'Torch'
         activeTorch = -1
         score_+=Stages[Stage].points
-        score.innerHTML=score_
-        localStorage.setItem('score', score_)
+        if(Mode == 1){
+            score.innerHTML = score_
+            score.style.color = 'green'
+            setTimeout(()=>{
+                score.style.color = 'white'
+            }, 750)
+            localStorage.setItem('score', score_)
+        }
         if(levelStage[currentStage] && currentStage === (levelStage.length - 1)){
+            clearInterval(interval)
             stageEnd = true
             status.className = 'Success'
-            status.innerHTML = "<div>Вы выиграли</div><div onclick='nextLevel()' class='Button'>Следующий уровень</div>"
+            status.innerHTML = `<div>Вы выиграли</div>`
+            status.innerHTML += `<div onclick='restartLevel()' class='Button'>Заново</div>`
+            status.innerHTML += (Stage != (Stages.length - 1)) ? `<div onclick='nextLevel()' class='Button'>Следующий уровень</div>`:''
         }
     }
 }
 
 function restartLevel(){
-    levelStage = [true, false, false, false]
+    levelStage = [true, false, false, false, false, false]
     currentStage = 0
     stageEnd = false
     status.className = 'Hidden'
-    torchDivs[activeTorch].className = 'Torch'
     activeTorch = -1
+    score_ = 0
     currentPosition.top = Stages[Stage].start.top
     currentPosition.left = Stages[Stage].start.left
     torchMan.style.top = `${Stages[Stage].start.top - 23}px`
     torchMan.style.left = `${Stages[Stage].start.left- 26}px`
+    startStage()
 }
 
 function nextLevel(){
     Stage++
-    levelStage = [true, false, false, false]
+    levelStage = [true, false, false, false, false, false]
     map.style.backgroundImage = Stages[Stage].background
     torches = Stages[Stage].torches
     roads = Stages[Stage].roads
@@ -221,6 +232,7 @@ function nextLevel(){
     currentPosition.left = Stages[Stage].start.left
     torchMan.style.top = `${Stages[Stage].start.top - 23}px`
     torchMan.style.left = `${Stages[Stage].start.left- 26}px`
+    startStage()
 }
 
 function move(event) {
@@ -238,7 +250,12 @@ function generateMap(){
     map.prepend(torchMan)
     map.prepend(toMenu)
     map.prepend(status)
-    map.prepend(score)
+    if(Mode===1){
+        console.log(score)
+        score.className=''
+        score.innerHTML = score_
+        map.prepend(score)
+    }
     map.prepend(nickname)
     map.prepend(menu1)
     map.prepend(menu2)
@@ -274,8 +291,9 @@ var torchDivs;
 var time_to_spawn = 3000
 var interval;
 function pause(){
+    status.className="Hidden"
     toMenu.className="Hidden"
-    levelStage = [true, false, false, false]
+    levelStage = [true, false, false, false, false, false]
     currentStage = 0
     stageEnd = true
     clearInterval(interval)
@@ -290,16 +308,34 @@ function startStage(){
     torchDivs = document.getElementsByClassName('Torch')
 
     function randomTwinkle() {
+        console.log(111)
         if(levelStage[currentStage] && !stageEnd){
             activeTorch = Math.floor(Math.random() * 10) % torches.length
             torchDivs[activeTorch].className = 'Torch TorchTwinckling'
+            console.log(222)
             currentStage++
             setTimeout(() => {
                 if(!levelStage[currentStage] && !stageEnd){
-                    stageEnd = true
-                    status.className = 'Error'
-                    status.innerText = "Вы обосрались"
-                    status.innerHTML = "<div>Вы проиграли</div><div onclick='restartLevel()' class='Button'>Заново</div>"
+                        if(Mode===1){
+                            const record = localStorage.getItem('record')
+                            if(Number(record) < score_){
+                                localStorage.setItem('record', score_)
+                                stageEnd = true
+                                status.className = 'Success'
+                                status.innerHTML = `<div>Новый рекорд!</div>${score_}<div onclick='restartLevel()' class='Button'>Заново</div>`
+                            }
+                            else{
+                                stageEnd = true
+                                status.className = 'Error'
+                                status.innerHTML = `<div>Рекорд:</div>${record}<div>Текущий счет</div>${score_}<div onclick='restartLevel()' class='Button'>Заново</div>`
+                            }
+                            score_ = 0
+                        }
+                    else{
+                        stageEnd = true
+                        status.className = 'Error'
+                        status.innerHTML = "<div>Вы проиграли</div><div onclick='restartLevel()' class='Button'>Заново</div>"
+                    }
                 }
             }, time_to_spawn)
         }
@@ -320,6 +356,10 @@ function setMode(i) {
     map.style.backgroundImage = Stages[Stage].background
     time_to_spawn = Stages[Stage].time
     Mode = i
+    currentPosition.top = Stages[Stage].start.top
+    currentPosition.left = Stages[Stage].start.left
+    torchMan.style.top = `${Stages[Stage].start.top - 23}px`
+    torchMan.style.left = `${Stages[Stage].start.left- 26}px`
     menu2.className="Hidden"
     stageEnd = false
     startStage()
@@ -337,11 +377,12 @@ function setStage(i) {
 }
 
 function getMeta(){
-    score_ = Number(localStorage.getItem('score'))??0
+    score_ = 0
     score.innerHTML = score_
 
     name = localStorage.getItem('nickname')
-    if(!name){
+    console.log(name)
+    if(name === "null"){
         name = prompt("Your name is:")
         localStorage.setItem('nickname', name)
     }
