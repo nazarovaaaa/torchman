@@ -96,6 +96,7 @@ input{
     z-index: 10;
     width:300px;
     height: 200px;
+    text-align: center;
 }
 
 #Map{

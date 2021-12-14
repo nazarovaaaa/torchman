@@ -396,4 +396,7 @@ function chooseMode (){
     <div onclick="setStage(1)" class="Button">Сложный</div>`
 }
 getMeta()
+setTimeout(()=>{
+
+}, 5000)
 chooseMode()

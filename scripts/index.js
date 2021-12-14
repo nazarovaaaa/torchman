@@ -295,13 +295,14 @@ function switchVisibility(element, mode= false){
     element.className = mode?'':'Hidden'
 }
 
-function setNotification(index, timeout){
+function setNotification(index, timeout, flag = false){
     if(!Notifications[index].flag){
         insertInnerHtml(notification, Notifications[index].div)
         switchVisibility(notification,true)
         if(timeout){
-            setTimeout(()=>{
-                Notifications[index].flag = true
+            setTimeout(() => {
+                if(!flag)
+                    Notifications[index].flag = true
                 switchVisibility(notification)
             }, timeout)
         }
@@ -464,7 +465,7 @@ function torchLight(key) {
         }
     }
     else{
-        setNotification(5,5000)
+        setNotification(5,5000, true)
     }
 }
 
@@ -589,7 +590,7 @@ function randomTwinkle() {
         }while(activeTorch === prev)
         prev = activeTorch
         torchDivs[activeTorch].className = 'Torch TorchTwinkling';
-        setNotification(1, 4000)
+        setNotification(1, 4000, true)
         currentStage++;
         setTimeout(() => {
             if(!levelStage[currentStage] && !stageEnd){
@@ -637,7 +638,8 @@ function setInterval_(interval_){
 }
 
 function clear_() {
-    localStorage.clear()
+    localStorage.clear();
+    localStorage.setItem('reload', 1);
     location.reload();
 }
 
@@ -689,6 +691,7 @@ function meta(){
     name = localStorage.getItem('nickname')
     const rec_ = localStorage.getItem('record')
     record = rec_? rec_ : 0
+    reload = true
     if(name == 'null'){
         insertInnerHtml(menu, input)
     }
@@ -698,4 +701,13 @@ function meta(){
     }
 }
 
-meta();
+var reload = localStorage.getItem('reload')
+if(!reload){
+    setTimeout(()=>{
+        meta()
+    }, 10000)
+}
+else{
+    localStorage.removeItem('reload')
+    meta()
+}
