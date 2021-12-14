@@ -60,15 +60,15 @@ body, html{
 }
 
 .TorchStatusDivInactive{
-    width: 45px;
-    height: 45px;
+    width: 25px;
+    height: 25px;
     background-image: url("../assets/torch_icon_inactive.svg");
     background-size: contain;
 }
 
 .TorchStatusDivActive{
-    width: 45px;
-    height: 45px;
+    width: 25px;
+    height: 25px;
     background-image: url("../assets/torch_icon.svg");
     background-size: contain;
 }

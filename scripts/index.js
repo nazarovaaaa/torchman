@@ -201,6 +201,10 @@ var Notifications = [
     {
         flag: false,
         div: `Нажмите два раза на фонарь, чтобы зажечь его`
+    },
+    {
+        flag: false,
+        div: `Необходимо подойти к фонарю, чтобы его зажечь!`
     }
 ];
 
@@ -459,12 +463,15 @@ function torchLight(key) {
             localStorage.setItem('score', score)
         }
     }
+    else{
+        setNotification(5,5000)
+    }
 }
 
 
 function refreshMeta () {
     torchDivs = []
-    levelStage = [true, ...torches.map((item) => false)];
+    levelStage = [true, ...torches.map((item) => false), ...torches.map((item) => false)];
     stageEnd = false;
     score = 0;
     isTorchManActive = false;
@@ -619,7 +626,7 @@ function setStage(stage_){
 
 function setTorches(torches_){
     torches = Stages[Stage][torches_];
-    levelStage = [true, ...torches.map((item) => false)]
+    levelStage = [true, ...torches.map((item) => false), ...torches.map((item) => false)]
     console.log(levelStage)
     settings(3)
 }
