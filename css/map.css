@@ -38,15 +38,52 @@ body, html{
 }
 
 .Hidden{
-    display: none;
+    display: none !important;
+    width: 0 !important;
 }
 
 .Button{
     cursor: pointer;
+    width: 100%;
     background-color: grey;
     border: 2px darkgrey solid;
     text-align: center;
     color: white;
+    margin: 10px 0;
+}
+
+#TorchStatus{
+    position: absolute;
+    display: flex;
+    left: 0;
+    bottom: 15px;
+}
+
+.TorchStatusDivInactive{
+    width: 45px;
+    height: 45px;
+    background-image: url("../assets/torch_icon_inactive.svg");
+    background-size: contain;
+}
+
+.TorchStatusDivActive{
+    width: 45px;
+    height: 45px;
+    background-image: url("../assets/torch_icon.svg");
+    background-size: contain;
+}
+
+.Button:hover{
+    background-color: darkgray;
+}
+.Button:active{
+    background-color: #525252;
+}
+
+input{
+    font-family: Pixel;
+    width: 100%;
+    font-size: 20px;
 }
 
 #GameSpace{
@@ -69,6 +106,7 @@ body, html{
     width: 500px;
     height: 500px;
     background-size: cover;
+    background-image: url("../assets/first_back.svg");
 }
 #TorchMan{
     position: absolute;
@@ -77,11 +115,19 @@ body, html{
     background-image: url("../assets/torchman.svg");
     background-size: cover;
     cursor: pointer;
-    transition: top,  left;
+    transition: top 0.1s linear,  left 0.1s linear;
 }
 
 #TorchMan:hover{
     background-image: url("../assets/torch-selected.svg");
+}
+
+#Timer{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 0;
+    font-size: 15px;
 }
 
 #Score{
@@ -93,11 +139,12 @@ body, html{
 #Nickname{
     position: absolute;
     right: 5px;
-    bottom: 5px;
+    bottom: 10px;
     color: white;
 }
 #ToMenu{
     position: absolute;
+    width: 100px;
     right: 0;
     top: 0;
 }
@@ -120,14 +167,37 @@ body, html{
     animation: 2s twinkling infinite;
 }
 
+
+#Notification{
+    background-color: white;
+    color: black;
+    position: absolute;
+    z-index: 100;
+    font-size: 15px;
+    left: 0;
+    width: 150px;
+    top: 0;
+}
+
 .Road{
     position: absolute;
 }
-.Menu{
+#Menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     z-index: 100;
     height: 150px;
     text-align: center;
     width: 300px;
+}
+
+#Town{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
 }
 
 @keyframes twinkling {

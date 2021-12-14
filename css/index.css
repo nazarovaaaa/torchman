@@ -1,0 +1,131 @@
+body{
+    overflow-x: hidden;
+}
+
+.Main_{
+    display: flex;
+}
+
+.Prologue{
+    width: 100%;
+    font-size: 30px;
+}
+
+.Instruction{
+    transition: flex 1s ease;
+    z-index: 0;
+    margin-left: 15px;
+    height: 500px;
+    display: flex;
+    width: 300px;
+    flex-direction: column;
+    font-size: 18px;
+    justify-content: space-between;
+    animation: outro 2s forwards;
+    animation-delay: 10s;
+}
+
+.InstructionItem{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.InstructionItemText{
+    color:white;
+}
+
+#InstructionItemImage1{
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+
+}
+
+#InstructionItemImage2{
+    height: 100px;
+    background-size: cover;
+}
+
+#GameSpace{
+    animation: intro_game 2s forwards;
+    animation-delay: 10s;
+}
+
+#item0{
+    opacity: 0;
+    animation: intro 2s forwards;
+    animation-delay: 0s;
+}
+#item1{
+    opacity: 0;
+    animation: intro 2s forwards;
+    animation-delay: 2s;
+}
+#item2{
+    opacity: 0;
+    animation: intro 2s forwards;
+    animation-delay: 4s;
+}
+#item3{
+    opacity: 0;
+    animation: intro 2s forwards;
+    animation-delay: 6s;
+}
+
+
+@keyframes intro {
+    0%{
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes intro_game {
+    0%{
+        transform: translateX(0);
+    }
+    100%{
+        transform: translateX(100px);
+    }
+}
+
+@keyframes outro {
+    0%{
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100%{
+        transform: translateX(100px);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 1000px){
+    @keyframes intro_game {
+        0%{
+            transform: translateX(0);
+        }
+        100%{
+            transform: translateX(0px);
+        }
+    }
+    .Main_{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #GameSpace{
+        transform: translateX(0) !important;
+    }
+    .Instruction{
+        justify-content: center;
+    }
+    .InstructionItem{
+        justify-content: center;
+    }
+}

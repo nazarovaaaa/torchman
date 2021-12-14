@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>TorchMan</title>
     <link rel="stylesheet" href="css/map.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
 </head>
 <body>
 <div class="Main">
-    <iframe id="GameSpace" srcdoc='<!DOCTYPE html>
+    <div class="Main_">
+        <iframe id="GameSpace" srcdoc='<!DOCTYPE html>
         <html lang="en">
             <head>
                 <meta charset="UTF-8">
@@ -17,20 +19,44 @@
             <body>
             <div class="Main">
                 <div id="Map">
+                    <div id="Timer" class="Hidden"> </div>
+                    <div id="TorchStatus"></div>
+                    <div id="Task"></div>
+                    <div id="Notification"></div>
                     <div id="Status" class="Hidden"></div>
                     <div id="Score" class="Hidden"></div>
                     <div id="Nickname"></div>
                     <div id="ToMenu" class="Button Hidden">В меню</div>
-                    <div id="Menu" class="Menu Success Hidden">
+                    <div id="Menu" class="Menu Hidden">
                     </div>
-                    <div id="TorchMan">
+                    <div class="Hidden" id="TorchMan">
+                                        <div id="Town"></div>
                     </div>
                 </div>
             </div>
             <script src="scripts/index.js"></script>
             </body>
         </html>'>
-    </iframe>
+        </iframe>
+        <div class="Instruction">
+            <div id="item0"class="Prologue">Когда наступает ночь, каждый из нас ищет свет. Но кто нам его даст?</div>
+            <div id="item1" class="InstructionItem">
+                <div class="InstructionItemText">
+                    Вы фонарщик. Вам необходимо спасти город от Тьмы. Двигайтесь <u>мышью</u>
+                </div>
+                <img src="assets/torchman.svg" id="InstructionItemImage1">
+                </img>
+            </div>
+            <div id="item2" class="InstructionItem">
+                <img src="assets/torch.gif" id="InstructionItemImage2">
+                </img>
+                <div class="InstructionItemText">
+                    Зажигайте фонари на <u>дабл-клик</u>, не давайте им погаснуть
+                </div>
+            </div>
+            <div id="item3" class="Prologue">Каждый из них важен, иначе город захватит Тьма.</div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
